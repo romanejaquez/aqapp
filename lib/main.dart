@@ -3,11 +3,14 @@ import 'package:aqapp/widgets/sun.dart';
 import 'package:aqapp/widgets/trees.dart';
 import 'package:aqapp/widgets/windmill.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'widgets/airqualitycontent.dart';
 
 void main() {
   runApp(
     MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'Product Sans Regular'
+      ),
       debugShowCheckedModeBanner: false,
       home: const MyApp()
     )
@@ -67,6 +70,12 @@ class MyApp extends StatelessWidget {
               child: Trees(),
             ),
           ),
+        
+          // content
+          const Align(
+            alignment: Alignment.topLeft,
+            child: AirQualityContent()
+          )
         ],
       )
     );
