@@ -24,6 +24,13 @@ class MyApp extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          // sun
+          Positioned(
+            top: 20,
+            right: 20,
+            child: Sun()
+          ),
+          
           // clouds
           const Positioned.fill(
             child: Clouds()
@@ -60,15 +67,6 @@ class MyApp extends StatelessWidget {
               child: Trees(),
             ),
           ),
-
-          // sun
-          Positioned(
-            top: 20,
-            right: 20,
-            child: Sun()
-          ),
-
-          
         ],
       )
     );
