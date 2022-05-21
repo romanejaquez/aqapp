@@ -13,14 +13,14 @@ class AirQualityCityService extends ChangeNotifier {
 
   set showDropdown(bool value) {
     _showDropdown = value;
-    //notifyListeners();
+    notifyListeners();
   }
 
   String get selectedCity => _selectedCity;
 
   set selectedCity(String value) {
     _selectedCity = value;
-    //notifyListeners();
+    notifyListeners();
   }
 
   triggerFetchingData() {

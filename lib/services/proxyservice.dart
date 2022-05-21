@@ -8,7 +8,7 @@ class ProxyService {
   static const String BASE_URL = 'http://api.airvisual.com/v2/';
   static const String API_KEY = '79660a76-ae58-471b-8334-fb7f56f08b31';
   static const String COUNTRIES = 'countries?key=';
-  static const String STATES = 'states?country={COUNTRY}?key=';
+  static const String STATES = 'states?country={COUNTRY}&key=';
   static const String CITIES = 'cities?state={STATE}&country={COUNTRY}&key=';
   
 
@@ -54,7 +54,7 @@ class ProxyService {
     List<String> states = [];
     Completer<List<String>> statesCompleter = Completer();
 
-    var url = Uri.parse('http://api.airvisual.com/v2/states?country=USA&key=79660a76-ae58-471b-8334-fb7f56f08b31'); //BASE_URL + STATES.replaceAll(RegExp(r'{COUNTRY}'), country) + API_KEY);
+    var url = Uri.parse(BASE_URL + STATES.replaceAll(RegExp(r'{COUNTRY}'), country) + API_KEY);
     
     http.get(url).then((response) {
 

@@ -26,9 +26,6 @@ class _SelectCityModalState extends State<SelectCityModal> {
   @override
   Widget build(BuildContext context) {
 
-    AirQualityStateService stateService = Provider.of<AirQualityStateService>(context, listen: false);
-    AirQualityCityService cityService = Provider.of<AirQualityCityService>(context, listen: false);
-
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -68,99 +65,124 @@ class _SelectCityModalState extends State<SelectCityModal> {
                   ),
             
                   // state
-                  FutureBuilder(
-                      future: stateService.getStatesByCountry(),
-                      builder: (context, snapshot) {
+                  Consumer<AirQualityStateService>(
+                    builder: (context, stateService, child) {
+                      return FutureBuilder(
+                        future: stateService.getStatesByCountry(),
+                        builder: (context, snapshot) {
 
-                        if (!snapshot.hasData) {
-                          return Text('fetching data...');
-                        }
+                          if (!snapshot.hasData) {
+                            return SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(AQColors.mainBlue),
+                                )
+                              );
+                          }
 
-                        List<String> stateItems = snapshot.data as List<String>;
-                        
-                        return Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Select your State'),
-                              DropdownButton<String>(
-                                isExpanded: true,
-                                value: stateService.selectedState,
-                                items: stateItems.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value)
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  if (stateService.selectedState != newValue!) {
-                                    setState(() {
+                          List<String> stateItems = snapshot.data as List<String>;
+                          
+                          return Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Select your State'),
+                                DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: stateService.selectedState,
+                                  items: stateItems.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value)
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    if (stateService.selectedState != newValue!) {
                                       stateService.selectedState = newValue;
 
                                       var cityService = Provider.of<AirQualityCityService>(context, listen: false);
                                       cityService.showDropdown = true;
-                                    });
+                                    }
                                   }
-                                }
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-            
-                  !cityService.showDropdown ? SizedBox() : 
-                      FutureBuilder(
-                      future: cityService.getCitiesByStateAndCountry(context),
-                      builder: (context, snapshot) {
-
-                        if (!snapshot.hasData) {
-                          return SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(AQColors.mainBlue),
-                            )
+                                )
+                              ],
+                            ),
                           );
-                        }
+                        },
+                      );
+                    }
+                  ),
+            
+                  Consumer<AirQualityCityService>(
+                    builder: (context, service, child) {
 
-                        List<String> cityItems = snapshot.data as List<String>;
-                        
-                        return Container(
-                          margin: const EdgeInsets.only(top: 10, bottom: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Select your City'),
-                              DropdownButton<String>(
-                                isExpanded: true,
-                                value: cityService.selectedCity,
-                                items: cityItems.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value)
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  if (cityService.selectedCity != newValue!) {
-                                    setState(() {
-                                      cityService.selectedCity = newValue;
-                                    });
-                                  }
-                                }
+                      if (!service.showDropdown) {
+                          return SizedBox();
+                      }
+
+                      return FutureBuilder(
+                        future: service.getCitiesByStateAndCountry(context),
+                        builder: (context, snapshot) {
+
+                          if (!snapshot.hasData) {
+                            return SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(AQColors.mainBlue),
                               )
-                            ],
-                          ),
-                        );
-                      },
-                    )
+                            );
+                          }
+
+                          List<String> cityItems = snapshot.data as List<String>;
+                          
+                          return Container(
+                            margin: const EdgeInsets.only(top: 10, bottom: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Select your City'),
+                                DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: service.selectedCity,
+                                  items: cityItems.map((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value)
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    if (service.selectedCity != newValue!) {
+                                      service.selectedCity = newValue;
+                                    }
+                                  }
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  ),
                 ],
               ),
             ),
-            AQRoundButton(
-              onTap: () {},
-              label: 'Get Air Quality Data'
+            Consumer<AirQualityStateService>(
+              builder: (context, aqs, child) {
+                return Consumer<AirQualityCityService>(
+                  builder: (context, aqc, child) {
+                    return Opacity(
+                      opacity: aqs.selectedState != '--' && aqc.selectedCity != '--' ? 1 : 0.2,
+                      child: AQRoundButton(
+                        onTap: () {},
+                        label: 'Get Air Quality Data'
+                      )
+                    );
+                  }
+                );
+              },
             )
           ],
         )

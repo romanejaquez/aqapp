@@ -5,15 +5,20 @@ class AirQualityStateService extends ChangeNotifier {
 
   String _selectedCountry = 'USA';
   String _selectedState = '--';
+  List<String> states = [];
 
   String get selectedState => _selectedState;
 
   set selectedState(String value) {
     _selectedState = value;
-    //notifyListeners();
+    notifyListeners();
   }
 
-  Future<List<String>> getStatesByCountry() {
-    return ProxyService.getStatesByCountry(_selectedCountry);
+  Future<List<String>> getStatesByCountry() async {
+    if (states.isEmpty) {
+      states = await ProxyService.getStatesByCountry(_selectedCountry);
+    }
+
+    return states;
   }
 }
