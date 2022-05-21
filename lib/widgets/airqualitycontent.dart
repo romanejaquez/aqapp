@@ -16,7 +16,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(60),
+      padding: const EdgeInsets.all(80),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

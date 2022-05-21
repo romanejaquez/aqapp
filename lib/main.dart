@@ -1,18 +1,31 @@
+import 'package:aqapp/services/airqualitycityservice.dart';
+import 'package:aqapp/services/airqualitystateservice.dart';
 import 'package:aqapp/widgets/clouds.dart';
 import 'package:aqapp/widgets/sun.dart';
 import 'package:aqapp/widgets/trees.dart';
 import 'package:aqapp/widgets/windmill.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'widgets/airqualitycontent.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Product Sans Regular'
-      ),
-      debugShowCheckedModeBanner: false,
-      home: const MyApp()
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AirQualityStateService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AirQualityCityService(),
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          fontFamily: 'Product Sans Regular'
+        ),
+        debugShowCheckedModeBanner: false,
+        home: const MyApp()
+      )
     )
   );
 }

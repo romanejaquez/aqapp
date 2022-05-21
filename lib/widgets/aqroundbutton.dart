@@ -12,6 +12,16 @@ class AQRoundButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin ?? EdgeInsets.zero,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(50),
+        boxShadow: [
+          BoxShadow(
+            color: AQColors.mainGreen.withOpacity(0.5),
+            blurRadius: 10,
+            offset: Offset.zero
+          )
+        ]
+      ),
       child: Material(
         color: AQColors.mainGreen,
         borderRadius: BorderRadius.circular(50),
