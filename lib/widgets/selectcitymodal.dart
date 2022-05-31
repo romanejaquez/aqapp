@@ -165,7 +165,7 @@ class _SelectCityModalState extends State<SelectCityModal> {
                           aqpService.setCityAndState(aqc.selectedCity, aqs.selectedState);
                           Navigator.of(context).pop();
                         },
-                        label: 'Get Air Quality Data'
+                        label: 'Get Air Quality'
                       )
                     );
                   }

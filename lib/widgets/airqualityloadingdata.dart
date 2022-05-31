@@ -1,4 +1,6 @@
 import 'package:aqapp/helpers/aqcolors.dart';
+import 'package:aqapp/helpers/utils.dart';
+import 'package:aqapp/models/airqualitystyles.dart';
 import 'package:flutter/material.dart';
 
 class AirQualityLoadingData extends StatelessWidget {
@@ -6,14 +8,18 @@ class AirQualityLoadingData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    AirQualityStyles aqStyles = Utils.airQualityStyles[Utils.getDeviceType(context)] as AirQualityStyles;
+    
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: aqStyles.loadingAlignment,
       child: SizedBox(
         width: MediaQuery.of(context).size.width / 2,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: const  [
+          children:  const [
             Text('Loading Air Quality Data...',
+              textAlign: TextAlign.center,
               style: TextStyle(color: AQColors.mainBlue)
             ),
             SizedBox(height: 20),

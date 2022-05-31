@@ -143,7 +143,30 @@ class ProxyService {
     .replaceAll(RegExp(r'{STATE}'), state);
 
     var url = Uri.parse(BASE_URL + parsedUrlPortion + API_KEY);
+
+    var parsedJSON = {
+      "data": {
+        "city": "Los Angeles",
+        "state": "California",
+        "country": "USA",
+        "current": {
+          "pollution": {
+            "aqius": 40
+          },
+          "weather": {
+            "tp": 25,
+            "hu": 5,
+            "ws": 6,
+            "ic": "01d"
+          }
+        }
+      }
+    };
+
+    AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
+    aqCompleter.complete(aqModel);
     
+    /*
     http.get(url).then((response) {
 
       var parsedJSON = convert.jsonDecode(response.body);
@@ -166,6 +189,7 @@ class ProxyService {
         const AsyncSnapshot.withError(ConnectionState.done, 'error')
       );
     });    
+    */
 
     return aqCompleter.future;
   }

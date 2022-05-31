@@ -1,3 +1,5 @@
+import 'package:aqapp/helpers/utils.dart';
+import 'package:aqapp/models/airqualitystyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,15 +32,22 @@ class _TreesState extends State<Trees> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    AirQualityStyles aqStyles = Utils.airQualityStyles[Utils.getDeviceType(context)] as AirQualityStyles;
+    
     return SizedBox(
       width: 600,
       height: 400,
       child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          Positioned(
-            left: 110,
-            bottom: -10,
-            child: SvgPicture.asset('assets/imgs/aq_tree_sm.svg')
+          Visibility(
+            visible: aqStyles.smallTreeVisible,
+            child: Positioned(
+              left: 110,
+              bottom: -10,
+              child: SvgPicture.asset('assets/imgs/aq_tree_sm.svg')
+            ),
           ),
           Positioned(
             left: 200,

@@ -1,3 +1,5 @@
+import 'package:aqapp/helpers/utils.dart';
+import 'package:aqapp/models/airqualitystyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -44,41 +46,44 @@ class _CloudsState extends State<Clouds> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    AirQualityStyles aqStyles = Utils.airQualityStyles[Utils.getDeviceType(context)] as AirQualityStyles;
+
     return Stack(
       children: [
         SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(-1.0, 0.50),
-            end: Offset(MediaQuery.of(context).size.width / 150, 0.50)
+            end: Offset(MediaQuery.of(context).size.width / aqStyles.cloudsmSize, 0.50)
           ).animate(CurvedAnimation(parent: controller1, curve: Curves.linear)
           ),
           child:  SvgPicture.asset(
             'assets/imgs/aq_cloud1.svg',
-            width: 150,
+            width: aqStyles.cloudsmSize,
           )
         ),
         SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(-1.0, 1.0),
-            end: Offset(MediaQuery.of(context).size.width / 350, 1.0)
+            end: Offset(MediaQuery.of(context).size.width / aqStyles.cloudlgSize, 1.0)
           ).animate(CurvedAnimation(parent: controller2, curve: Curves.linear)
           ),
           child:  SvgPicture.asset(
             'assets/imgs/aq_cloud2.svg',
-            width: 350,
+            width: aqStyles.cloudlgSize,
           )
         ),
         SlideTransition(
           position: Tween<Offset>(
             begin: const Offset(-1.0, 2.0),
-            end: Offset(MediaQuery.of(context).size.width / 250, 2.0)
+            end: Offset(MediaQuery.of(context).size.width / aqStyles.cloudmdSize, 2.0)
           ).animate(CurvedAnimation(parent: controller3, curve: Curves.linear)
           ),
           child:  Opacity(
             opacity: 0.5,
             child: SvgPicture.asset(
               'assets/imgs/aq_cloud2.svg',
-              width: 250,
+              width: aqStyles.cloudmdSize,
             ),
           )
         )

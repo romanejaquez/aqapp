@@ -2,6 +2,7 @@ import 'package:aqapp/helpers/aqcolors.dart';
 import 'package:aqapp/helpers/aqiconfonts.dart';
 import 'package:aqapp/helpers/utils.dart';
 import 'package:aqapp/models/airquality.model.dart';
+import 'package:aqapp/models/airqualitystyles.dart';
 import 'package:aqapp/services/airqualitypanelservice.dart';
 import 'package:aqapp/widgets/airqualityloadingdata.dart';
 import 'package:aqapp/widgets/aqroundbutton.dart';
@@ -19,6 +20,9 @@ class AirQualityContent extends StatefulWidget {
 class _AirQualityContentState extends State<AirQualityContent> {
   @override
   Widget build(BuildContext context) {
+
+    AirQualityStyles aqStyles = Utils.airQualityStyles[Utils.getDeviceType(context)] as AirQualityStyles;
+    
     return Consumer<AirQualityPanelService>(
       builder: (context, service, child) {
 
@@ -33,7 +37,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
             AirQualityModel aqModel = snapshot.data as AirQualityModel;
 
             return Padding(
-              padding: const EdgeInsets.all(80),
+              padding: EdgeInsets.all(aqStyles.aqContentPadding),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +47,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(Icons.air, size: 160, color: AQColors.mainBlue),
+                      Icon(Icons.air, size: aqStyles.aqMainIcon, color: AQColors.mainBlue),
                       const SizedBox(width: 20),
                       Column(
                         mainAxisSize: MainAxisSize.min,
@@ -64,7 +68,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
                   const SizedBox(height: 20),
                   Row(
                     children: [
-                      const Icon(AQIconFonts.storm, color: AQColors.mainGreen, size: 40),
+                      Icon(Utils.getWeatherIconFromString(aqModel.icon), color: AQColors.mainGreen, size: 40),
                       const SizedBox(width: 10),
                       Text.rich(
                         TextSpan(
@@ -75,18 +79,21 @@ class _AirQualityContentState extends State<AirQualityContent> {
                           ]
                         )
                       ),
-                      AQRoundButton(
-                        onTap: () {
-                          Utils.showModal(context, const SelectCityModal());
-                        },
-                        label: 'Select your City',
-                        margin: const EdgeInsets.only(left: 50),
+                      Visibility(
+                        visible: aqStyles.selectButtonHoriz,
+                        child: AQRoundButton(
+                          onTap: () {
+                            Utils.showModal(context, const SelectCityModal());
+                          },
+                          label: 'Select your City',
+                          margin: const EdgeInsets.only(left: 50),
+                        ),
                       )
                     ],
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
-                    width: 150,
+                    width: 180,
                     child: Column(
                       children: [
                         Row(
@@ -102,6 +109,16 @@ class _AirQualityContentState extends State<AirQualityContent> {
                           ],
                         )          
                       ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: !aqStyles.selectButtonHoriz,
+                    child: AQRoundButton(
+                      onTap: () {
+                        Utils.showModal(context, const SelectCityModal());
+                      },
+                      label: 'Select your City',
+                      margin: const EdgeInsets.only(top: 50),
                     ),
                   )
                 ],
