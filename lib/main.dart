@@ -1,4 +1,5 @@
 import 'package:aqapp/services/airqualitycityservice.dart';
+import 'package:aqapp/services/airqualitypanelservice.dart';
 import 'package:aqapp/services/airqualitystateservice.dart';
 import 'package:aqapp/widgets/clouds.dart';
 import 'package:aqapp/widgets/sun.dart';
@@ -17,6 +18,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => AirQualityCityService(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AirQualityPanelService(),
         )
       ],
       child: MaterialApp(

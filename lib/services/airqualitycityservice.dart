@@ -5,14 +5,15 @@ import 'package:provider/provider.dart';
 
 class AirQualityCityService extends ChangeNotifier {
 
-  String _selectedCountry = 'USA';
   String _selectedCity = '--';
   bool _showDropdown = false;
+  List<String> cities = [];
 
   bool get showDropdown => _showDropdown;
 
   set showDropdown(bool value) {
     _showDropdown = value;
+    cities = [];
     notifyListeners();
   }
 
@@ -27,8 +28,13 @@ class AirQualityCityService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<String>> getCitiesByStateAndCountry(BuildContext context) {
-    var _selectedState = Provider.of<AirQualityStateService>(context, listen: false).selectedState;
-    return ProxyService.getCitiesByStateAndCountry(_selectedCountry, _selectedState);
+  Future<List<String>> getCitiesByStateAndCountry(BuildContext context) async {
+    if (cities.isEmpty) {
+      var aqsService = Provider.of<AirQualityStateService>(context, listen: false);
+      var selectedState = aqsService.selectedState;
+      cities = await ProxyService.getCitiesByStateAndCountry(aqsService.selectedCountry, selectedState);
+    }
+
+    return cities;
   }
 }

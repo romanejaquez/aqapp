@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:aqapp/models/airquality.model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -10,6 +11,7 @@ class ProxyService {
   static const String COUNTRIES = 'countries?key=';
   static const String STATES = 'states?country={COUNTRY}&key=';
   static const String CITIES = 'cities?state={STATE}&country={COUNTRY}&key=';
+  static const String AQ_URL = 'city?city={CITY}&state={STATE}&country={COUNTRY}&key=';
   
 
   static Future<List<String>> getCountries() {
@@ -129,5 +131,42 @@ class ProxyService {
     });
 
     return citiesCompleter.future;    
+  }
+
+  static Future<AirQualityModel> getAirQuality(String country, String state, String city) {
+
+    Completer<AirQualityModel> aqCompleter = Completer();
+
+    var parsedUrlPortion = AQ_URL
+    .replaceAll(RegExp(r'{CITY}'), city)
+    .replaceAll(RegExp(r'{COUNTRY}'), country)
+    .replaceAll(RegExp(r'{STATE}'), state);
+
+    var url = Uri.parse(BASE_URL + parsedUrlPortion + API_KEY);
+    
+    http.get(url).then((response) {
+
+      var parsedJSON = convert.jsonDecode(response.body);
+
+      if (response.statusCode == 200 && parsedJSON['status'] == 'success') {
+        AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
+        aqCompleter.complete(aqModel);
+      }
+      else {
+        aqCompleter.completeError(
+          const AsyncSnapshot.withError(ConnectionState.done, 'error')
+        );
+      }
+    }).onError((error, stackTrace) {
+      aqCompleter.completeError(
+        const AsyncSnapshot.withError(ConnectionState.done, 'error')
+      );
+    }).catchError((error) {
+      aqCompleter.completeError(
+        const AsyncSnapshot.withError(ConnectionState.done, 'error')
+      );
+    });    
+
+    return aqCompleter.future;
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AirQualityStateService extends ChangeNotifier {
 
-  String _selectedCountry = 'USA';
+  String selectedCountry = 'USA';
   String _selectedState = '--';
   List<String> states = [];
 
@@ -16,9 +16,8 @@ class AirQualityStateService extends ChangeNotifier {
 
   Future<List<String>> getStatesByCountry() async {
     if (states.isEmpty) {
-      states = await ProxyService.getStatesByCountry(_selectedCountry);
+      states = await ProxyService.getStatesByCountry(selectedCountry);
     }
-
     return states;
   }
 }

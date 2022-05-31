@@ -1,22 +1,19 @@
 import 'package:aqapp/helpers/aqcolors.dart';
 import 'package:aqapp/services/airqualitycityservice.dart';
+import 'package:aqapp/services/airqualitypanelservice.dart';
 import 'package:aqapp/services/airqualitystateservice.dart';
 import 'package:aqapp/widgets/aqroundbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SelectCityModal extends StatefulWidget {
-  SelectCityModal({Key? key}) : super(key: key);
+  const SelectCityModal({Key? key}) : super(key: key);
 
   @override
   State<SelectCityModal> createState() => _SelectCityModalState();
 }
 
 class _SelectCityModalState extends State<SelectCityModal> {
-
-  String selectedCity = '--';
-  String selectedState = '--';
-  String selectedCountry = '--';
 
   @override
   void initState() {
@@ -41,25 +38,10 @@ class _SelectCityModalState extends State<SelectCityModal> {
                   Container(
                     margin: const EdgeInsets.only(top: 10, bottom: 20),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
                         Text('Select your Country'),
                         Text('USA', style: TextStyle(color: AQColors.mainBlue, fontSize: 20))
-                        // DropdownButton<String>(
-                        //   isExpanded: true,
-                        //   value: selectedCountry,
-                        //   items: <String>['--', 'USA', 'Algeria', 'Puerto Rico'].map((String value) {
-                        //     return DropdownMenuItem<String>(
-                        //       value: value,
-                        //       child: Text(value)
-                        //     );
-                        //   }).toList(),
-                        //   onChanged: (String? newValue) {
-                        //     setState(() {
-                        //       selectedCountry = newValue!;
-                        //     });
-                        //   }
-                        // )
                       ],
                     ),
                   ),
@@ -72,7 +54,7 @@ class _SelectCityModalState extends State<SelectCityModal> {
                         builder: (context, snapshot) {
 
                           if (!snapshot.hasData) {
-                            return SizedBox(
+                            return const SizedBox(
                                 width: 30,
                                 height: 30,
                                 child: CircularProgressIndicator(
@@ -88,7 +70,7 @@ class _SelectCityModalState extends State<SelectCityModal> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Select your State'),
+                                const Text('Select your State'),
                                 DropdownButton<String>(
                                   isExpanded: true,
                                   value: stateService.selectedState,
@@ -104,6 +86,7 @@ class _SelectCityModalState extends State<SelectCityModal> {
 
                                       var cityService = Provider.of<AirQualityCityService>(context, listen: false);
                                       cityService.showDropdown = true;
+                                      cityService.selectedCity = "--";
                                     }
                                   }
                                 )
@@ -114,12 +97,13 @@ class _SelectCityModalState extends State<SelectCityModal> {
                       );
                     }
                   ),
-            
+
+                  // city
                   Consumer<AirQualityCityService>(
                     builder: (context, service, child) {
 
                       if (!service.showDropdown) {
-                          return SizedBox();
+                          return const SizedBox();
                       }
 
                       return FutureBuilder(
@@ -127,7 +111,7 @@ class _SelectCityModalState extends State<SelectCityModal> {
                         builder: (context, snapshot) {
 
                           if (!snapshot.hasData) {
-                            return SizedBox(
+                            return const SizedBox(
                               width: 30,
                               height: 30,
                               child: CircularProgressIndicator(
@@ -176,7 +160,11 @@ class _SelectCityModalState extends State<SelectCityModal> {
                     return Opacity(
                       opacity: aqs.selectedState != '--' && aqc.selectedCity != '--' ? 1 : 0.2,
                       child: AQRoundButton(
-                        onTap: () {},
+                        onTap: () {
+                          AirQualityPanelService aqpService = Provider.of<AirQualityPanelService>(context, listen: false);
+                          aqpService.setCityAndState(aqc.selectedCity, aqs.selectedState);
+                          Navigator.of(context).pop();
+                        },
                         label: 'Get Air Quality Data'
                       )
                     );
