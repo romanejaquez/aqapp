@@ -28,6 +28,8 @@ class Utils {
       cloudmdSize: 150,
       cloudlgSize: 250,
       loadingAlignment: Alignment.center,
+      airQualityValueSize: 130,
+      topMargin: 60
     ),
     DeviceBreakpoints.tablet: AirQualityStyles(
       windmill1Size: 0.7,
@@ -47,6 +49,8 @@ class Utils {
       cloudmdSize: 200,
       cloudlgSize: 300,
       loadingAlignment: Alignment.centerLeft,
+      airQualityValueSize: 130,
+      topMargin: 0
     ),
     DeviceBreakpoints.laptop: AirQualityStyles(
       windmill1Size: 1.0,
@@ -66,6 +70,8 @@ class Utils {
       cloudmdSize: 250,
       cloudlgSize: 350,
       loadingAlignment: Alignment.centerLeft,
+      airQualityValueSize: 140,
+      topMargin: 0
     )
   };
 

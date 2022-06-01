@@ -30,7 +30,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
           future: service.getAirQuality(),
           builder: (context, snapshot) {
 
-            if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
+            if (!snapshot.hasData) {
               return const AirQualityLoadingData();
             }
 
@@ -42,6 +42,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: aqStyles.topMargin),
                   Text('${aqModel.city},', style: const TextStyle(color: AQColors.mainBlue, fontSize: 30, fontWeight: FontWeight.bold)),
                   Text(aqModel.state, style: const TextStyle(color: AQColors.mainBlue, fontSize: 40, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
@@ -53,10 +54,12 @@ class _AirQualityContentState extends State<AirQualityContent> {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(aqModel.airQuality.toString(), style: const TextStyle(fontSize: 120, color: Colors.black, fontWeight: FontWeight.bold)),
+                          Text(aqModel.airQuality.toInt().toString(), 
+                            style: TextStyle(fontSize: aqStyles.airQualityValueSize, color: Colors.black, fontWeight: FontWeight.bold)
+                          ),
                           Row(
                             children: const [
-                              Text('Air Quality', style: TextStyle(fontSize: 30, color: Colors.grey, fontWeight: FontWeight.bold)),
+                              Text('Air Content', style: TextStyle(fontSize: 30, color: Colors.grey, fontWeight: FontWeight.bold)),
                               SizedBox(width: 10),
                               Icon(Icons.info_outline, size: 30, color: Colors.grey)
                             ],
@@ -74,7 +77,7 @@ class _AirQualityContentState extends State<AirQualityContent> {
                         TextSpan(
                           style: const TextStyle(color: AQColors.mainGreen),
                           children: [
-                            TextSpan(text: aqModel.temp.toString(), style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
+                            TextSpan(text: aqModel.temp.toInt().toString(), style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
                             const TextSpan(text: ' C', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                           ]
                         )

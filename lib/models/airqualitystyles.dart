@@ -19,6 +19,8 @@ class AirQualityStyles {
   final double cloudmdSize;
   final double cloudlgSize;
   final Alignment loadingAlignment;
+  final double topMargin;
+  final double airQualityValueSize;
 
   AirQualityStyles({
     required this.windmill1Size,
@@ -37,6 +39,8 @@ class AirQualityStyles {
     required this.cloudsmSize,
     required this.cloudmdSize,
     required this.cloudlgSize,
-    required this.loadingAlignment
+    required this.loadingAlignment,
+    required this.topMargin,
+    required this.airQualityValueSize
   });
 }
