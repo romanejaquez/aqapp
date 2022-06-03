@@ -1,5 +1,4 @@
 import 'package:aqapp/helpers/aqcolors.dart';
-import 'package:aqapp/helpers/aqiconfonts.dart';
 import 'package:aqapp/helpers/utils.dart';
 import 'package:aqapp/models/airquality.model.dart';
 import 'package:aqapp/models/airqualitystyles.dart';
