@@ -1,8 +1,6 @@
 import 'package:aqapp/models/airquality.model.dart';
-import 'package:aqapp/services/airqualitystateservice.dart';
 import 'package:aqapp/services/proxyservice.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class AirQualityPanelService extends ChangeNotifier {
 

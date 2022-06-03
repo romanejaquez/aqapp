@@ -151,12 +151,12 @@ class ProxyService {
         "country": "USA",
         "current": {
           "pollution": {
-            "aqius": 40
+            "aqius": 60.0
           },
           "weather": {
-            "tp": 25,
-            "hu": 5,
-            "ws": 6,
+            "tp": 25.0,
+            "hu": 5.0,
+            "ws": 6.0,
             "ic": "01d"
           }
         }
@@ -166,30 +166,30 @@ class ProxyService {
     AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
     aqCompleter.complete(aqModel);
     
-    /*
-    http.get(url).then((response) {
+    
+    // http.get(url).then((response) {
 
-      var parsedJSON = convert.jsonDecode(response.body);
+    //   var parsedJSON = convert.jsonDecode(response.body);
 
-      if (response.statusCode == 200 && parsedJSON['status'] == 'success') {
-        AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
-        aqCompleter.complete(aqModel);
-      }
-      else {
-        aqCompleter.completeError(
-          const AsyncSnapshot.withError(ConnectionState.done, 'error')
-        );
-      }
-    }).onError((error, stackTrace) {
-      aqCompleter.completeError(
-        const AsyncSnapshot.withError(ConnectionState.done, 'error')
-      );
-    }).catchError((error) {
-      aqCompleter.completeError(
-        const AsyncSnapshot.withError(ConnectionState.done, 'error')
-      );
-    });    
-    */
+    //   if (response.statusCode == 200 && parsedJSON['status'] == 'success') {
+    //     AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
+    //     aqCompleter.complete(aqModel);
+    //   }
+    //   else {
+    //     aqCompleter.completeError(
+    //       const AsyncSnapshot.withError(ConnectionState.done, 'error')
+    //     );
+    //   }
+    // }).onError((error, stackTrace) {
+    //   aqCompleter.completeError(
+    //     const AsyncSnapshot.withError(ConnectionState.done, 'error')
+    //   );
+    // }).catchError((error) {
+    //   aqCompleter.completeError(
+    //     const AsyncSnapshot.withError(ConnectionState.done, 'error')
+    //   );
+    // });    
+    
 
     return aqCompleter.future;
   }
