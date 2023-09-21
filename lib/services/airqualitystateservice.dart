@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AirQualityStateService extends ChangeNotifier {
 
-  String selectedCountry = 'USA';
+  String selectedCountry = 'czech-republic';
   String _selectedState = '--';
   List<String> states = [];
 

@@ -41,7 +41,7 @@ class _SelectCityModalState extends State<SelectCityModal> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: const [
                         Text('Select your Country'),
-                        Text('USA', style: TextStyle(color: AQColors.mainBlue, fontSize: 20))
+                        Text('Czech Rep.', style: TextStyle(color: AQColors.mainBlue, fontSize: 20))
                       ],
                     ),
                   ),

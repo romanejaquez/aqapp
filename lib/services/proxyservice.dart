@@ -7,7 +7,7 @@ import 'dart:convert' as convert;
 class ProxyService {
 
   static const String BASE_URL = 'http://api.airvisual.com/v2/';
-  static const String API_KEY = '79660a76-ae58-471b-8334-fb7f56f08b31';
+  static const String API_KEY = '6d34c39f-3f14-4488-84f7-48d38bae4ffe';
   static const String COUNTRIES = 'countries?key=';
   static const String STATES = 'states?country={COUNTRY}&key=';
   static const String CITIES = 'cities?state={STATE}&country={COUNTRY}&key=';
@@ -143,52 +143,29 @@ class ProxyService {
     .replaceAll(RegExp(r'{STATE}'), state);
 
     var url = Uri.parse(BASE_URL + parsedUrlPortion + API_KEY);
+    
+    http.get(url).then((response) {
 
-    var parsedJSON = {
-      "data": {
-        "city": "Los Angeles",
-        "state": "California",
-        "country": "USA",
-        "current": {
-          "pollution": {
-            "aqius": 60.0
-          },
-          "weather": {
-            "tp": 25.0,
-            "hu": 5.0,
-            "ws": 6.0,
-            "ic": "01d"
-          }
-        }
+      var parsedJSON = convert.jsonDecode(response.body);
+
+      if (response.statusCode == 200 && parsedJSON['status'] == 'success') {
+        AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
+        aqCompleter.complete(aqModel);
       }
-    };
-
-    AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
-    aqCompleter.complete(aqModel);
-    
-    
-    // http.get(url).then((response) {
-
-    //   var parsedJSON = convert.jsonDecode(response.body);
-
-    //   if (response.statusCode == 200 && parsedJSON['status'] == 'success') {
-    //     AirQualityModel aqModel = AirQualityModel.fromJson(parsedJSON);
-    //     aqCompleter.complete(aqModel);
-    //   }
-    //   else {
-    //     aqCompleter.completeError(
-    //       const AsyncSnapshot.withError(ConnectionState.done, 'error')
-    //     );
-    //   }
-    // }).onError((error, stackTrace) {
-    //   aqCompleter.completeError(
-    //     const AsyncSnapshot.withError(ConnectionState.done, 'error')
-    //   );
-    // }).catchError((error) {
-    //   aqCompleter.completeError(
-    //     const AsyncSnapshot.withError(ConnectionState.done, 'error')
-    //   );
-    // });    
+      else {
+        aqCompleter.completeError(
+          const AsyncSnapshot.withError(ConnectionState.done, 'error')
+        );
+      }
+    }).onError((error, stackTrace) {
+      aqCompleter.completeError(
+        const AsyncSnapshot.withError(ConnectionState.done, 'error')
+      );
+    }).catchError((error) {
+      aqCompleter.completeError(
+        const AsyncSnapshot.withError(ConnectionState.done, 'error')
+      );
+    });    
     
 
     return aqCompleter.future;

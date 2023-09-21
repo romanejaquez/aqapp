@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class AirQualityPanelService extends ChangeNotifier {
 
-  String selectedCity = 'Los Angeles';
-  String selectedState = 'California';
-  String selectedCountry = 'USA';
+  String selectedCity = 'Prague';
+  String selectedState = 'Praha';
+  String selectedCountry = 'czech-republic';
 
   void setCityAndState(String city, String state) {
     selectedCity = city;
